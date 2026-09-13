@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { BarChart3, CheckCircle2, ChevronDown, CirclePlus, ClipboardList, FolderKanban, LayoutDashboard, LogOut, Menu, Plus, Search, Settings2, Sparkles, UserRound, X } from 'lucide-react'
+import { Link, NavLink, Navigate, Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { BarChart3, CheckCircle2, ChevronDown, CirclePlus, ClipboardList, FolderKanban, LayoutDashboard, LogOut, Menu, Moon, Plus, Search, Settings2, Sparkles, Sun, UserRound, X } from 'lucide-react'
 import { authApi, projectApi, taskApi } from './services/api'
 import { useTaskflowData } from './hooks/useTaskflowData'
 import { completionRate, priorityLabels, statusLabels } from './utils/taskUtils'
 import { demoUser } from './utils/demoData'
+import { useTheme } from './context/ThemeContext'
 
 const navItems = [
   { to: '/dashboard', label: 'Overview', icon: LayoutDashboard },
@@ -17,6 +18,7 @@ function App() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('taskflow_user') || 'null'))
   const [mobileNav, setMobileNav] = useState(false)
   const data = useTaskflowData()
+  const { theme, toggleTheme } = useTheme()
 
   const logout = () => {
     localStorage.removeItem('taskflow_token')
@@ -31,7 +33,7 @@ function App() {
         <header className="topbar">
           <button className="icon-button mobile-menu" onClick={() => setMobileNav(true)} aria-label="Open navigation"><Menu size={20} /></button>
           <div className="crumb"><span>Workspace</span><strong>/</strong><span className="crumb-current">My flow</span></div>
-          <div className="topbar-actions"><button className="icon-button" aria-label="Search"><Search size={18} /></button><div className="avatar">{user.name?.slice(0, 1).toUpperCase()}</div></div>
+          <div className="topbar-actions"><button className="icon-button" aria-label="Search"><Search size={18} /></button><button className="theme-toggle" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>{theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}</button><div className="avatar">{user.name?.slice(0, 1).toUpperCase()}</div></div>
         </header>
         {data.usingDemo && <div className="demo-banner"><Sparkles size={15} /> Showing a sample workspace. Start the API to sync your own tasks.</div>}
         <Routes>
