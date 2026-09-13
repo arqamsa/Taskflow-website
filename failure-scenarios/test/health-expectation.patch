@@ -1,0 +1,6 @@
+diff --git a/backend/tests/test_health.py b/backend/tests/test_health.py
+--- a/backend/tests/test_health.py
++++ b/backend/tests/test_health.py
+@@
+-    assert response.json() == {"status": "healthy"}
++    assert response.json() == {"status": "ready"}

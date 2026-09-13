@@ -1,0 +1,6 @@
+diff --git a/.github/workflows/backend-tests.yml b/.github/workflows/backend-tests.yml
+--- a/.github/workflows/backend-tests.yml
++++ b/.github/workflows/backend-tests.yml
+@@
+-        working-directory: backend
++        working-directory: backend-service

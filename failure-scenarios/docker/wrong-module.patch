@@ -1,0 +1,6 @@
+diff --git a/backend/Dockerfile b/backend/Dockerfile
+--- a/backend/Dockerfile
++++ b/backend/Dockerfile
+@@
+-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
++CMD ["uvicorn", "app.server:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -1,0 +1,6 @@
+diff --git a/backend/app/api/dashboard.py b/backend/app/api/dashboard.py
+--- a/backend/app/api/dashboard.py
++++ b/backend/app/api/dashboard.py
+@@
+-        pending_tasks=sum(task.status != "DONE" for task in tasks),
++        pending_tasks=sum(task.status == "DONE" for task in tasks),

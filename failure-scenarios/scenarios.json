@@ -1,0 +1,58 @@
+{
+  "syntax-error": {
+    "type": "SYNTAX",
+    "description": "Remove the colon from the health endpoint definition.",
+    "target": "backend/app/main.py",
+    "patch": "syntax/health-colon.patch",
+    "expected_behavior": "pytest collection or application import fails with SyntaxError"
+  },
+  "import-error": {
+    "type": "IMPORT",
+    "description": "Import a service symbol that does not exist.",
+    "target": "backend/app/api/auth.py",
+    "patch": "import/missing-security-symbol.patch",
+    "expected_behavior": "application import fails with ImportError"
+  },
+  "logic-error": {
+    "type": "LOGIC",
+    "description": "Report completed tasks as pending tasks.",
+    "target": "backend/app/api/dashboard.py",
+    "patch": "logic/pending-count.patch",
+    "expected_behavior": "dashboard test fails on the pending task count"
+  },
+  "test-error": {
+    "type": "TEST",
+    "description": "Change the expected health response to a wrong status value.",
+    "target": "backend/tests/test_health.py",
+    "patch": "test/health-expectation.patch",
+    "expected_behavior": "pytest fails with an assertion error"
+  },
+  "dependency-error": {
+    "type": "DEPENDENCY",
+    "description": "Pin a package to a version that does not exist.",
+    "target": "backend/requirements.txt",
+    "patch": "dependency/invalid-fastapi.patch",
+    "expected_behavior": "pip install fails while resolving requirements"
+  },
+  "frontend-error": {
+    "type": "FRONTEND",
+    "description": "Invert the zero-task completion calculation.",
+    "target": "frontend/src/utils/taskUtils.js",
+    "patch": "frontend/inverted-completion.patch",
+    "expected_behavior": "frontend utility test fails"
+  },
+  "docker-error": {
+    "type": "DOCKER",
+    "description": "Use a nonexistent FastAPI module in the backend startup command.",
+    "target": "backend/Dockerfile",
+    "patch": "docker/wrong-module.patch",
+    "expected_behavior": "container starts and exits because uvicorn cannot import the app"
+  },
+  "yaml-error": {
+    "type": "CI_CONFIGURATION",
+    "description": "Run the backend test command from a nonexistent directory.",
+    "target": ".github/workflows/backend-tests.yml",
+    "patch": "yaml/wrong-working-directory.patch",
+    "expected_behavior": "GitHub Actions job cannot locate the test project"
+  }
+}

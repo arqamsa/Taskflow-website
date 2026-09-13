@@ -1,0 +1,6 @@
+diff --git a/backend/requirements.txt b/backend/requirements.txt
+--- a/backend/requirements.txt
++++ b/backend/requirements.txt
+@@
+-fastapi==0.115.6
++fastapi==99.99.99

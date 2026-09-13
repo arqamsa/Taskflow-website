@@ -1,0 +1,6 @@
+diff --git a/backend/app/api/auth.py b/backend/app/api/auth.py
+--- a/backend/app/api/auth.py
++++ b/backend/app/api/auth.py
+@@
+-from app.core.security import create_access_token, hash_password, verify_password
++from app.core.security import create_access_token, hash_password, verify_password, rotate_refresh_token

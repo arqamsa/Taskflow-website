@@ -1,0 +1,9 @@
+diff --git a/backend/app/main.py b/backend/app/main.py
+--- a/backend/app/main.py
++++ b/backend/app/main.py
+@@
+-@app.get("/health")
++@app.get("/health")
+-def health():
++def health()
+     return {"status": "healthy"}
