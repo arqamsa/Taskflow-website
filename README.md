@@ -92,6 +92,64 @@ docker compose up
 
 The frontend runs on `http://localhost:5173` and the backend on `http://localhost:8000`. Compose stores the local SQLite database in a named volume.
 
+## Demo deployment: Render + Vercel
+
+The simplest hosted demo uses Render for the FastAPI backend and Vercel for the Vite frontend. Docker is not required.
+
+### Deploy the backend to Render
+
+Create a Render **Web Service** connected to this repository with:
+
+- Root directory: `backend`
+- Runtime: `Python 3`
+- Build command: `pip install -r requirements.txt`
+- Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+The repository also includes `render.yaml` with these settings. You can use Render's Blueprint flow to apply them automatically. `backend/runtime.txt` pins the service to Python 3.11, which avoids source builds for older dependency versions on Python 3.14.
+
+Add these environment variables in Render:
+
+```text
+DATABASE_URL=sqlite:///./taskflow.db
+SECRET_KEY=<a-long-random-value>
+FRONTEND_URL=https://<your-vercel-domain>
+```
+
+After deployment, verify `https://<your-render-service>.onrender.com/health` returns `{"status":"healthy"}`. Copy this Render URL for the frontend API variable.
+
+### Deploy the frontend to Vercel
+
+Import the same repository into Vercel and set:
+
+- Root directory: `frontend`
+- Framework preset: `Vite`
+- Build command: `npm run build`
+- Output directory: `dist`
+
+Add this Vercel environment variable before deploying:
+
+```text
+VITE_API_URL=https://<your-render-service>.onrender.com/api
+```
+
+The `frontend/vercel.json` rewrite keeps React Router routes such as `/projects` and `/profile` working when opened directly.
+
+### Important demo limitation
+
+The default SQLite database is suitable for this demo and requires no external service, but Render's local filesystem may be reset when a service is redeployed or restarted. This can remove registered users and task data. That is acceptable for the TaskFlow patient/demo scope; use a persistent database only if durable hosted data becomes a requirement.
+
+### Hosted smoke test
+
+1. Open the Render `/health` endpoint.
+2. Open the Vercel URL and register a user.
+3. Create a project and task.
+4. Move the task across Kanban statuses.
+5. Refresh `/dashboard` and `/projects` to verify the API URL and CORS configuration.
+
+### Render dependency mismatch troubleshooting
+
+The backend requirements for TaskFlow contain only FastAPI, SQLAlchemy, JWT/password security, and test packages. If Render logs mention packages such as `e2b`, `openai`, `groq`, or `psycopg2`, Render is not building this TaskFlow commit. Check that the service repository is `chetankumar-rs/Taskflow-website`, branch is `main`, and root directory is `backend`. Then trigger **Clear build cache & deploy**. The expected first install line is `fastapi==0.115.6` from `backend/requirements.txt`.
+
 ## Authentication and API
 
 The main endpoints are:
